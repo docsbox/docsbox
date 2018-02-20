@@ -13,4 +13,5 @@ ENV LC_ALL en_US.UTF-8
 
 ADD . /home/docsbox
 WORKDIR /home/
+RUN pip3 install --upgrade pip
 RUN pip3 install -r docsbox/requirements.txt

@@ -1,4 +1,7 @@
-git+https://github.com/nvie/rq.git#egg=rq
+#git+https://github.com/nvie/rq.git#egg=rq
+#git+https://github.com/nvie/rq.git#egg=rq
+#rq
+rq-scheduler==0.7.0
 Flask==0.11.1
 Flask-RESTful==0.3.5
 Flask-RQ2==16.0.2

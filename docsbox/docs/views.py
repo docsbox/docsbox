@@ -41,6 +41,8 @@ class DocumentCreateView(Resource):
         else:
             with NamedTemporaryFile(delete=False, prefix=app.config["MEDIA_PATH"]) as tmp_file:
                 request.files["file"].save(tmp_file)
+                tmp_file.flush()
+                tmp_file.close()
                 remove_file.schedule(
                     datetime.timedelta(seconds=app.config["ORIGINAL_FILE_TTL"])
                 , tmp_file.name)
