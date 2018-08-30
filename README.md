@@ -3,98 +3,16 @@
 `docsbox` is a standalone service that allows you convert office documents, like .docx and .pptx, into more useful filetypes like PDF, for viewing it in browser with PDF.js, or HTML for organizing full-text search of document content.  
 `docsbox` uses **LibreOffice** (via **LibreOfficeKit**) for document converting.
 
-```bash
-$ curl -F "file=@kittens.docx" http://localhost/api/v1/
-
-{
-    "id": "9b643d78-d0c8-4552-a0c5-111a89896176",
-    "status": "queued"
-}
-
-$ curl http://localhost/api/v1/9b643d78-d0c8-4552-a0c5-111a89896176
-
-{
-    "id": "9b643d78-d0c8-4552-a0c5-111a89896176",
-    "result_url": "/media/9b643d78-d0c8-4552-a0c5-111a89896176.zip",
-    "status": "finished"
-}
-
-$ curl -O http://localhost/media/9b643d78-d0c8-4552-a0c5-111a89896176.zip
-
-$ unzip -l 9b643d78-d0c8-4552-a0c5-111a89896176.zip 
-
-Archive:  9b643d78-d0c8-4552-a0c5-111a89896176.zip
-  Length      Date    Time    Name
----------  ---------- -----   ----
-    11135  2016-07-08 05:31   txt
-   373984  2016-07-08 05:31   pdf
-   147050  2016-07-08 05:31   html
----------                     -------
-   532169                     3 files
-```
-
-```bash
-$ cat options.json 
-{
-  "formats": ["pdf"],
-  "thumbnails": {
-    "size": "640x480",
-  }
-}
-
-$ curl -i -F "file=@kittens.ppt" -F "options=<options.json" http://localhost/api/v1/
-
-{
-  "id": "afb58e2b-78fa-4dd7-b7f9-a64f75f50cb1",
-  "status": "queued"
-}
-
-$ curl http://localhost/api/v1/afb58e2b-78fa-4dd7-b7f9-a64f75f50cb1
-
-{
-  "id": "afb58e2b-78fa-4dd7-b7f9-a64f75f50cb1",
-  "status": "finished",
-  "result_url": "/media/afb58e2b-78fa-4dd7-b7f9-a64f75f50cb1.zip"
-}
-
-$ curl -O http://localhost/media/afb58e2b-78fa-4dd7-b7f9-a64f75f50cb1.zip
-
-$ unzip -l afb58e2b-78fa-4dd7-b7f9-a64f75f50cb1.zip
-Archive:  afb58e2b-78fa-4dd7-b7f9-a64f75f50cb1.zip
-  Length      Date    Time    Name
----------  ---------- -----   ----
-   779820  2016-07-10 02:02   pdf
-   177357  2016-07-10 02:02   thumbnails/0.png
-                              ...
-   130923  2016-07-10 02:02   thumbnails/30.png
----------                     -------
- 13723770                     32 files
-
-```
-
-# API
-
-```
-POST (multipart/form-data) /api/v1/
-file=@kittens.docx
-options={ # json, optional
-    "formats": ["pdf"] # desired formats to be converted in, optional
-    "thumbnails": { # optional
-        "size": "320x240",
-    } 
-}
-
-GET /api/v1/{task_id}
-```
-
 # Install
+
 Currently, installing powered by docker-compose:
 
 ```bash
-$ git clone https://github.com/dveselov/docsbox.git && cd docsbox
+$ git clone https://github.com/oikeusministerio/docsbox.git && cd docsbox
 $ docker-compose build
 $ docker-compose up
 ```
+
 
 It'll start this services:
 
@@ -118,6 +36,54 @@ THUMBNAILS_DPI - thumbnails dpi, for bigger thumbnails choice bigger values (def
 LIBREOFFICE_PATH - path to libreoffice (default: /usr/lib/libreoffice/program/)
 ```
 
+# Test
+
+Uploading File:
+
+```bash
+$ curl -X POST -F "file=@test.odt" http://localhost/api/document/upload
+{"status": "queued", "id": "32982f1d-6b23-4360-b1aa-c324b538ac4c"}
+
+$ curl -X POST -F "file=@test.docx" http://localhost/api/document/upload
+{"message": "File cannot be uploaded needs to be converted"}
+```
+
+Checking File Type:
+
+```bash
+$ curl -X GET -F "file=@test.odt" http://localhost/api/document
+{"mimetype": "application/vnd.oasis.opendocument.text"}
+```
+
+Converting and Retrieving a File:
+
+```bash
+$ curl -X POST -F "file=@test.docx" http://localhost/api/document/convert
+{"status": "queued", "id": "146faa45-893b-4e3f-9251-d5f6dbeb5934"}
+
+$ curl -X GET http://localhost/api/document/146faa45-893b-4e3f-9251-d5f6dbeb5934
+{"status": "finished", "id": "146faa45-893b-4e3f-9251-d5f6dbeb5934"}
+
+$ curl -X GET -O http://localhost/api/document/download/146faa45-893b-4e3f-9251-d5f6dbeb5934
+```
+Download returns converted file (default to pdf)
+
+
+# API
+
+```
+POST (multipart/form-data) /api/document/convert
+file=@test.docx
+options={ # json, optional
+    "formats": ["pdf"] # desired formats to be converted in, optional
+    "thumbnails": { # optional
+        "size": "320x240",
+    } 
+}
+
+GET /api/document/{task_id}
+```
+
 # Scaling
 Within a single physical server, docsbox can be scaled by docker-compose:
 ```bash
@@ -126,6 +92,7 @@ $ docker-compose scale web=4 rqworker=8
 For multi-host deployment you'll need to create global syncronized volume (e.g. with flocker), global redis-server and mount it at `docker-compose.yml` file.
 
 # Supported filetypes
+
 
 | Input                              | Output              | Thumbnails |
 | ---------------------------------- | ------------------- | ---------- |
