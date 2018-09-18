@@ -1,0 +1,6 @@
+{
+    "formats": ["pdf"],
+    "thumbnails": {
+        "size": "640x480"
+    }
+}

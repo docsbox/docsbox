@@ -1,3 +1,10 @@
+# Pyhon cache
+**/__pycache__
+*pyc
+
+#Editor Setings
+.vscode
+
 *.py[cod]
 
 # C extensions

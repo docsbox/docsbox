@@ -1,0 +1,74 @@
+listFilesConvertNotRequired = [
+    #.ODT
+    "test6.odt",
+    #.ODP
+    "test4.odp",
+    #.ODG
+    "test18.odg",
+    #.ODF
+    "test19.odf",
+    #.ODS
+    "test20.ods",
+    #.PNG
+    "test9.png", 
+    #.TXT
+    "test11.txt",
+    #.CSV
+    "test12.csv",
+    #.EPUB
+    "test14.epub",
+    #.MP4
+    "test15.mp4",
+    #.JPG
+    "test17.jpg",
+    #.FLAC
+    "test16.flac"
+]
+
+listFilesConvertRequired = [
+    #.XLSX
+    "test1.xlsx", 
+    #.DOC
+    "test5.doc",
+    #.DOCX
+    "test8.docx",
+    #.PPTX
+    "test10.pptx", 
+    #.RTF
+    "test13.rtf",
+    #.PPT
+    "test2.ppt",
+    #.XLS
+    "test22.xls",
+	#.STW
+    "test21.stw",
+    #.SXW
+    "test26.sxw",
+    #.SXC
+    "test27.sxc",
+    #.STC
+    "test28.stc",
+    #.SXI
+    "test29.sxi",
+    #.STI
+    "test30.sti",
+    #.SXD
+    "test31.sxd",
+    #.STD
+    "test32.std",
+    #.SXM
+    "test33.sxm",     
+    #.KTH
+    "test23.kth",
+    #.KE
+    "test24.ke",
+    #.NUMBERS
+    "test34.numbers",
+    #.PAGES
+    "test25.pages"
+]
+
+listFilesUnknown = [
+    #.SH
+    "test35.sh"
+]

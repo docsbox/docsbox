@@ -1,5 +1,5 @@
 from flask import Flask
-from flask.ext.rq2 import RQ
+from flask_rq2 import RQ
 from flask_restful import Api
 from flask_env_settings import Settings
 
@@ -23,10 +23,14 @@ Settings(app, rules={
 api = Api(app)
 rq = RQ(app)
 
-from docsbox.docs.views import DocumentView, DocumentCreateView
+from docsbox.docs.views import *
     
-api.add_resource(DocumentView, "/api/v1/<task_id>")
-api.add_resource(DocumentCreateView, "/api/v1/")
+api.add_resource(DocumentStateView, "/api/document/<task_id>")
+api.add_resource(DocumentTypeView, "/api/document")
+api.add_resource(DocumentConvertView, "/api/document/convert")
+api.add_resource(DocumentUploadView, "/api/document/upload")
+api.add_resource(DocumentDownloadView, "/api/document/download/<task_id>")
+
 
 if __name__ == "__main__":
     app.run()
