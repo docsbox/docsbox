@@ -1,3 +1,10 @@
+# Pyhon cache
+**/__pycache__
+*pyc
+
+#Editor Setings
+.vscode
+
 *.py[cod]
 
 # C extensions
@@ -46,3 +53,5 @@ docs/_build
 /example.db
 /_
 /.cache
+
+sampotesti.pem

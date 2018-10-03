@@ -1,6 +1,7 @@
 from flask import Flask
-from flask.ext.rq2 import RQ
+from flask_rq2 import RQ
 from flask_restful import Api
+# from flask_cors import CORS
 from flask_env_settings import Settings
 
 
@@ -9,7 +10,7 @@ app.config.from_object("docsbox.settings")
 
 Settings(app, rules={
     "REDIS_JOB_TIMEOUT": (int, 60 * 10),
-    "ORIGINAL_FILE_TTL": (int, 60 * 10),
+    "ORIGINAL_FILE_TTL": (int, 60),
     "RESULT_FILE_TTL": (int, 60 * 60 * 24),
 
     "LIBREOFFICE_PATH": (str, "/usr/lib/libreoffice/program/"),
@@ -22,11 +23,16 @@ Settings(app, rules={
 
 api = Api(app)
 rq = RQ(app)
+# cors = CORS(app, resourses={r"/api/*": {"origins":"*"}})
 
-from docsbox.docs.views import DocumentView, DocumentCreateView
+from docsbox.docs.views import *
     
-api.add_resource(DocumentView, "/api/v1/<task_id>")
-api.add_resource(DocumentCreateView, "/api/v1/")
+api.add_resource(DocumentTypeView, "/conversion-service/get-file-type/<file_id>")
+api.add_resource(DocumentConvertView, "/conversion-service/convert/<file_id>")
+api.add_resource(DocumentStatusView, "/conversion-service/status/<task_id>")
+api.add_resource(DocumentDownloadView, "/conversion-service/get-converted-file/<task_id>")
+api.add_resource(DeleteTmpFiles, "/conversion-service/delete-tmp-file/<task_id>")
+
 
 if __name__ == "__main__":
     app.run()

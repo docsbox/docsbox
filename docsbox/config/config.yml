@@ -1,0 +1,100 @@
+COMMON: &common
+  DEBUG: True
+  MEDIA_PATH: "/media/"
+
+  LIBREOFFICE_PATH: "/usr/lib/libreoffice/program/"
+  
+  REDIS_URL: "redis://redis:6379/0"
+  REDIS_JOB_TIMEOUT: 600
+  ORIGINAL_FILE_TTL: 60
+  RESULT_FILE_TTL: 86400
+
+  VIA_URL: "https://it1.integraatiopalvelu.fi/Tallennuspalvelu"
+  VIA_CERT_PATH: 
+  VIA_ALLOWED_USERS: "vakuutusoikeusbe"
+
+  THUMBNAILS_GENERATE: False
+  THUMBNAILS_DPI": 90
+  THUMBNAILS_QUANTIZE": False
+  THUMBNAILS_QUANTIZE_COLORS": 128
+  THUMBNAILS_QUANTIZE_COLORSPACE": "rgb"
+
+  SUPPORTED_FORMATS: ["pdf", "txt", "csv", "jpeg", "png"]
+  DOCUMENT_EXPORT_FORMATS: ["pdf", "txt"]
+  SPREADSHEET_EXPORT_FORMATS: ["pdf", "csv"]
+  PRESENTATION_EXPORT_FORMATS: ["pdf"]
+  IMAGE_EXPORT_FORMATS: ["jpeg", "png"]
+  PDF_EXPORT_FORMATS: ["pdf"]
+  ACCEPTED_MIMETYPES:
+    application/vnd.oasis.opendocument.text: # LibreOffice Word
+      format: "odt"
+    application/vnd.oasis.opendocument.spreadsheet: # LibreOffice Calc
+      format: "ods"
+    application/vnd.oasis.opendocument.presentation: # LibreOffice Impress
+      format: "odp"
+    application/vnd.oasis.opendocument.graphics: # LibreOffice Draw
+      format: "odg"
+    application/vnd.oasis.opendocument.formula: # LibreOffice Math
+      format: "odf"
+    text/plain: # Plain Text File
+      format: "txt"
+    text/scv: # Comma Seperated Values
+      format: "csv"
+    application/pdf: # Portable Document Format
+      format: "pdf"
+    application/epub+zip: # EPUB
+      format: "epub"
+    audio/flac: # Free Lossless Audio Codec
+      format: "flac"
+    video/mp4: # Advanced Video Coding
+      format: "mp4"
+    image/jpeg: # Joint Photographic Group
+      format: "jpeg"
+    image/png: # Portable Network Graphics
+      format: "png"
+
+  CONVERTABLE_MIMETYPES:
+    application/msword: # Microsoft Word 2003
+      formats: DOCUMENT_EXPORT_FORMATS
+    application/vnd.openxmlformats-officedocument.wordprocessingml.document: # Microsoft Word 2007
+      formats: DOCUMENT_EXPORT_FORMATS
+    application/vnd.ms-excel: # Microsoft Excel 2003
+      formats: SPREADSHEET_EXPORT_FORMATS
+    application/vnd.openxmlformats-officedocument.spreadsheetml.sheet: # Microsoft Excel 2007
+      formats: SPREADSHEET_EXPORT_FORMATS
+    application/vnd.ms-powerpoint: # Microsoft Powerpoint 2003
+      formats: PRESENTATION_EXPORT_FORMATS
+    application/vnd.openxmlformats-officedocument.presentationml.presentation: # Microsoft Powerpoint 2007
+      formats: PRESENTATION_EXPORT_FORMATS
+    text/rtf: # Rich Text Format
+      formats: DOCUMENT_EXPORT_FORMATS
+    #XML OpenOffice
+    application/vnd.sun.xml.writer: # sxw
+      formats: DOCUMENT_EXPORT_FORMATS
+    application/vnd.sun.xml.calc: # sxc
+      formats: SPREADSHEET_EXPORT_FORMATS
+    application/vnd.sun.xml.draw: # sxd
+      formats: PRESENTATION_EXPORT_FORMATS
+    application/vnd.sun.xml.impress: # sxi
+      formats: PRESENTATION_EXPORT_FORMATS
+    application/vnd.sun.xml.math: # sxm
+      formats: SPREADSHEET_EXPORT_FORMATS
+    application/vnd.sun.xml.writer.global: # sxg
+      formats: DOCUMENT_EXPORT_FORMATS
+    application/vnd.apple.keynote: #Apple Keynote
+      formats: PRESENTATION_EXPORT_FORMATS
+    application/vnd.apple.numbers: #Apple Numbers
+      formats: SPREADSHEET_EXPORT_FORMATS
+    application/vnd.apple.pages: #Apple Pages
+      formats: DOCUMENT_EXPORT_FORMATS
+
+  DEFAULT_OPTIONS:
+    formats: "pdf"
+    content-type: "application/pdf"
+
+DEVELOPMENT: &development
+  <<: *common
+  MEDIA_PATH: "/home/docsbox/media/"
+  VIA_CERT_PATH: "/home/docsbox/sampotesti.pem"
+
+PRODUCTION:
